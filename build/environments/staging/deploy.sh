@@ -18,7 +18,7 @@ ssh -T ${STAGING_SSH_USER}@${STAGING_SSH_HOST} <<_EOF_
 
     # post-prepare
     ln -s ../../../shared/Data/fileadmin/ releases/next/public/fileadmin
-    ln -s ../../../../../logs/ releases/next/http/typo3temp/var/logs
+    ln -s ../../../../../logs/ releases/next/public/typo3temp/var/logs
 
     # run
     rm -rf releases/previous
