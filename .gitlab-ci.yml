@@ -57,8 +57,6 @@ test:lint:php:
 test:codestyle:
   <<: *composer
   stage: test
-  tags:
-    - atintern
   script:
     - composer global require friendsofphp/php-cs-fixer
     - export PATH="$PATH:$HOME/.composer/vendor/bin"
@@ -80,7 +78,6 @@ build:npm:
   image: node:8.4
   stage: build
   only:
-    - develop
     - master
   before_script:
     - echo "You can install some global npm dependencies here like gulp or webpack"
@@ -95,10 +92,7 @@ build:npm:
 build:static:staging:
   image: debian
   stage: build
-  tags:
-    - atintern
   only:
-    - develop
     - master
   script:
     - cp build/environments/staging/.htaccess public/
@@ -123,7 +117,6 @@ deploy:staging:
     name: staging
     url: https://t3cb.tim-schreiner.de
   only:
-    - develop
     - master
   variables:
     GIT_STRATEGY: none
