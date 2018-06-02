@@ -17,7 +17,7 @@ ssh -T ${STAGING_SSH_USER}@${STAGING_SSH_HOST} <<_EOF_
     rsync -a cache/ releases/next/
 
     # post-prepare
-    ln -s ../../../shared/Data/fileadmin/ releases/next/http/fileadmin
+    ln -s ../../../shared/Data/fileadmin/ releases/next/public/fileadmin
     ln -s ../../../../../logs/ releases/next/http/typo3temp/var/logs
 
     # run
