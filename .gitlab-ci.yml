@@ -49,8 +49,6 @@ variables:
 test:lint:php:
   image: php:7.1-cli
   stage: test
-  tags:
-    - atintern
   script:
     - find ./packages/ -name \*.php -exec php -d display_errors=stderr -l {} > /dev/null \;
 
