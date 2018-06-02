@@ -1,0 +1,15 @@
+plugin.tx_sitepackage {
+    view {
+        templateRootPaths {
+            0 = {$plugin.tx_sitepackage.view.templateRootPath}
+        }
+
+        partialRootPaths {
+            0 = {$plugin.tx_sitepackage.view.partialRootPath}
+        }
+
+        layoutRootPaths {
+            0 = {$plugin.tx_sitepackage.view.layoutRootPath}
+        }
+    }
+}

@@ -1,0 +1,11 @@
+# Default page configuration
+page = PAGE
+
+# Extensions
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/setup.txt">
+
+<INCLUDE_TYPOSCRIPT: source="DIR:EXT:site_package/Configuration/TypoScript/Config/" extensions="typoscript">
+<INCLUDE_TYPOSCRIPT: source="DIR:EXT:site_package/Configuration/TypoScript/Lib/" extensions="typoscript">
+<INCLUDE_TYPOSCRIPT: source="DIR:EXT:site_package/Configuration/TypoScript/Page/" extensions="typoscript">
+<INCLUDE_TYPOSCRIPT: source="DIR:EXT:site_package/Configuration/TypoScript/ContentElement/" extensions="typoscript">
+<INCLUDE_TYPOSCRIPT: source="DIR:EXT:site_package/Configuration/TypoScript/Extension/" extensions="typoscript">

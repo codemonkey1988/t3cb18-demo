@@ -1,0 +1,43 @@
+config {
+    baseURL = {$config.baseUrl}
+    absRefPrefix = {$config.absRefPrefix}
+
+    htmlTag_setParams = lang="de"
+
+    admPanel = {$config.admPanel}
+
+    index_enable = 0
+
+    # language
+    linkVars = L(int)
+    sys_language_uid = 0
+    sys_language_overlay = 1
+    sys_language_mode = content_fallback
+    language = de
+    locale_all = de_DE.utf-8
+    htmlTag_langKey = de
+    htmlTag_setParams = lang="de" dir="ltr"
+
+    # realurl
+    tx_realurl_enable = {$config.realurl}
+
+    # 1 week frontend caching
+    cache_period = 604800
+
+    # Remove default CSS and JS
+    removeDefaultCSS = 1
+    removeDefaultJS = 1
+
+    tx_extbase {
+        mvc {
+            throwPageNotFoundExceptionIfActionCantBeResolved = 1
+        }
+    }
+
+    additionalHeaders {
+        11.header = x-frame-options: SAMEORIGIN
+        12.header = X-XSS-Protection: 1; mode=block
+        13.header = X-Content-Type-Options: nosniff
+        14.header = Referrer-Policy: no-referrer
+    }
+}

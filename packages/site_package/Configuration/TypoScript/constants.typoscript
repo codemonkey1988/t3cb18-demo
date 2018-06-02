@@ -1,0 +1,4 @@
+# Extensions
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/constants.txt">
+
+<INCLUDE_TYPOSCRIPT: source="DIR:EXT:site_package/Configuration/TypoScript/Constants/" extensions="typoscript">

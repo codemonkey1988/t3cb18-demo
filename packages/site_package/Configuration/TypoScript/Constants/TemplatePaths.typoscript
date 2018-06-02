@@ -1,0 +1,11 @@
+styles.templates.templateRootPath = EXT:site_package/Resources/Private/Templates/Content/
+styles.templates.partialRootPath = EXT:site_package/Resources/Private/Partials/Content/
+styles.templates.layoutRootPath = EXT:site_package/Resources/Private/Layouts/Content/
+
+plugin.tx_sitepackage.view.templateRootPath = EXT:site_package/Resources/Private/Templates/
+plugin.tx_sitepackage.view.partialRootPath = EXT:site_package/Resources/Private/Partials/
+plugin.tx_sitepackage.view.layoutRootPath = EXT:site_package/Resources/Private/Layouts/
+
+plugin.tx_sitepackage.view.page.templateRootPath = EXT:site_package/Resources/Private/Templates/Page/
+plugin.tx_sitepackage.view.page.partialRootPath = EXT:site_package/Resources/Private/Partials/Page/
+plugin.tx_sitepackage.view.page.layoutRootPath = EXT:site_package/Resources/Private/Layouts/Page/

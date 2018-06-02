@@ -1,0 +1,20 @@
+lib.pageContent = COA
+lib.pageContent {
+
+    10 = LOAD_REGISTER
+    10.IMAGE_VARIANT_KEY = TEXT
+    10.IMAGE_VARIANT_KEY.field = imageVariantKey
+    10.IMAGE_VARIANT_KEY.ifEmpty = default
+
+    20 = CONTENT
+    20.table = tt_content
+    20.select {
+        includeRecordsWithoutDefaultTranslation = 1
+        orderBy = sorting
+        where = {#colPos}={field:colPos}
+        where.insertData = 1
+        pidInList.data = TSFE:id
+    }
+
+    30 = RESTORE_REGISTER
+}

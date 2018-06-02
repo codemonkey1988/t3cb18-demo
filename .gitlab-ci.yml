@@ -1,0 +1,143 @@
+stages:
+  - test
+  - build
+  - deploy
+
+variables:
+  GIT_STRATEGY: clone
+  #npm_config_cache: /cache/npm
+  COMPOSER_CACHE_DIR: /cache/composer
+  COMPOSER_ALLOW_SUPERUSER: 1
+  COMPOSER_NO_INTERACTION: 1
+
+
+# Abstract tasks
+###############################
+
+.install-composer: &composer
+  image: php:7.1-cli
+  before_script:
+    - apt-get update -qq && apt-get install -qqy unzip git-core
+
+    # Install composer
+    - curl -OLs https://composer.github.io/installer.sig
+    - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    - php -r "if (hash_file('SHA384', 'composer-setup.php') === trim(file_get_contents('installer.sig'))) { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+    - php composer-setup.php --no-ansi --install-dir=/usr/bin --filename=composer
+    - php -r "unlink('composer-setup.php'); unlink('installer.sig');"
+
+.build-composer: &build
+  <<: *composer
+  stage: build
+  script:
+    - composer global require hirak/prestissimo
+    - MY_VAR=$(echo $CI_ENVIRONMENT_NAME | awk '{print toupper($0)}')_ENV; echo "${!MY_VAR}" >> .env
+    - composer install --no-dev --optimize-autoloader --prefer-dist
+  artifacts:
+    expire_in: 1h
+    paths:
+      - .env
+      - config/
+      - public/
+      - packages/
+      - vendor/
+
+
+# Tasks for test stage
+###############################
+
+test:lint:php:
+  image: php:7.1-cli
+  stage: test
+  tags:
+    - atintern
+  script:
+    - find ./packages/ -name \*.php -exec php -d display_errors=stderr -l {} > /dev/null \;
+
+test:codestyle:
+  <<: *composer
+  stage: test
+  tags:
+    - atintern
+  script:
+    - composer global require friendsofphp/php-cs-fixer
+    - export PATH="$PATH:$HOME/.composer/vendor/bin"
+    - php-cs-fixer fix --config build/.php_cs --dry-run --diff --diff-format udiff
+
+
+# Tasks for build stage
+###############################
+
+build:composer:staging:
+  <<: *build
+  only:
+    - develop
+    - master
+  environment:
+    name: staging
+
+build:npm:
+  image: node:8.4
+  stage: build
+  only:
+    - develop
+    - master
+  before_script:
+    - echo "You can install some global npm dependencies here like gulp or webpack"
+  script:
+    - echo "Install your npm packages with 'npm --quiet install'"
+    - echo "Build your dist files with 'npm run build' for example"
+  artifacts:
+    expire_in: 1h
+    paths:
+      - packages/site_package/Resources/Public/dist/
+
+build:static:staging:
+  image: debian
+  stage: build
+  tags:
+    - atintern
+  only:
+    - develop
+    - master
+  script:
+    - cp build/environments/staging/.htaccess public/
+    - cp build/environments/staging/robots.txt public/
+    - cp build/environments/staging/scheduler.php public/
+    - cp build/environments/staging/Env.typoscript packages/site_package/Configuration/TypoScript/Constants/
+  artifacts:
+    untracked: true
+    expire_in: 1h
+    paths:
+      - public/
+      - build/environments/staging/
+
+
+# Tasks for deployment
+###############################
+
+deploy:staging:
+  image: debian
+  stage: deploy
+  environment:
+    name: staging
+    url: https://t3cb.tim-schreiner.de
+  only:
+    - develop
+    - master
+  variables:
+    GIT_STRATEGY: none
+  before_script:
+    - apt-get update && apt-get install rsync -y
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$STAGING_SSH_KEY")
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - build/environments/staging/deploy.sh
+    - ssh ${STAGING_SSH_USER}@${STAGING_SSH_HOST} "curl ${CI_ENVIRONMENT_URL} >/dev/null 2>&1"
+  dependencies:
+    - build:composer:staging
+    - build:npm
+    - build:static:staging

@@ -1,0 +1,30 @@
+page.10 = FLUIDTEMPLATE
+page.10 {
+    templateRootPaths.0 =  {$plugin.tx_sitepackage.view.page.templateRootPath}
+    partialRootPaths.0 = {$plugin.tx_sitepackage.view.page.partialRootPath}
+    layoutRootPaths.0 = {$plugin.tx_sitepackage.view.page.layoutRootPath}
+
+    templateName = TEXT
+    templateName {
+        cObject = TEXT
+        cObject {
+            data = pagelayout
+            required = 1
+            case = uppercamelcase
+            split {
+                token = pagets__
+                cObjNum = 1
+                1.current = 1
+            }
+        }
+        ifEmpty = Default
+    }
+
+    dataProcessing {
+        10 = TYPO3\CMS\Frontend\DataProcessing\MenuProcessor
+        10 {
+            as = mainMenu
+            titleField = nav_title // title
+        }
+    }
+}

@@ -1,0 +1,6 @@
+.ddev/
+build/
+
+public/fileadmin
+
+public/typo3conf/ENABLE_INSTALL_TOOL

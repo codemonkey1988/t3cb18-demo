@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+if [ ! -x build/scripts/pre-commit.sh ];then
+    "echo "build/scripts/pre-commit.sh does not exist or is not executable"
+    "exit 0
+fi
+
+build/scripts/pre-commit.sh -f cache -n
+ERROR_CODE=$?
+
+if [ ${ERROR_CODE} -ne 0 ];then
+      exit 1
+fi
+
+exit 0
