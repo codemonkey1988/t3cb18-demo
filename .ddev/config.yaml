@@ -10,6 +10,7 @@ additional_hostnames:
   - "typo3-en.ddev.local"
 provider: default
 
+#dbimage: drud/mysql-local-57:v0.6.3
 
 # This config.yaml was created with ddev version v0.18.0 
 # webimage: drud/nginx-php-fpm-local:v1.3.0
@@ -58,6 +59,7 @@ provider: default
 # for them. Example:
 hooks:
   post-start:
+  - exec-host: cp -f build/git-hooks/pre-commit .git/hooks/
   - exec: cp -f /var/www/html/build/environments/development/.env /var/www/html/.env
   - exec: cp -f /var/www/html/build/environments/development/Env.typoscript /var/www/html/packages/site_package/Configuration/TypoScript/Constants/Env.typoscript
   - exec: composer install -d /var/www/html/
