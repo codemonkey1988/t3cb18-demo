@@ -24,10 +24,10 @@ ssh -T ${STAGING_SSH_USER}@${STAGING_SSH_HOST} <<_EOF_
     ln -sfn releases/$release_name/ releases/current
 
     # migrate
-    php71 releases/current/vendor/bin/typo3cms database:updateschema
+    php71 releases/$release_name/vendor/bin/typo3cms database:updateschema
 
     # post-run
-    php71 releases/current/vendor/bin/typo3cms cache:flush
+    php71 releases/$release_name/vendor/bin/typo3cms cache:flush
 
     # cleanup
 
