@@ -9,25 +9,25 @@ ssh -T ${STAGING_SSH_USER}@${STAGING_SSH_HOST} <<_EOF_
     set -xe
     cd ${STAGING_BASE_DIR}
 
-    release_name=$(date +%s)
+    TIMESTAMP=$(date +%s)
 
     # prepare
-    rm -rf releases/$release_name
+    mkdir -p releases
     mkdir -p logs
-    rsync -a cache/ releases/$release_name/
+    rsync -a cache/ releases/${TIMESTAMP}/
 
     # post-prepare
-    ln -s ../../../shared/Data/fileadmin/ releases/$release_name/public/fileadmin
-    ln -s ../../../../../logs/ releases/$release_name/public/typo3temp/var/logs
+    ln -s ../../../shared/Data/fileadmin/ releases/${TIMESTAMP}/public/fileadmin
+    ln -s ../../../../../logs/ releases/${TIMESTAMP}/public/typo3temp/var/logs
 
     # run
-    ln -sfn releases/$release_name/ releases/current
+    ln -sfn releases/${TIMESTAMP}/ releases/current
 
     # migrate
-    php71 releases/$release_name/vendor/bin/typo3cms database:updateschema
+    php71 releases/${TIMESTAMP}/vendor/bin/typo3cms database:updateschema
 
     # post-run
-    php71 releases/$release_name/vendor/bin/typo3cms cache:flush
+    php71 releases/${TIMESTAMP}/vendor/bin/typo3cms cache:flush
 
     # cleanup
 
