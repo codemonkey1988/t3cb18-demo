@@ -12,7 +12,7 @@ ssh -T ${STAGING_SSH_USER}@${STAGING_SSH_HOST} <<_EOF_
     cd ${STAGING_BASE_DIR}
 
     # prepare
-    mkdir -p releases/{TIMESTAMP}/
+    mkdir -p releases/${TIMESTAMP}/
     mkdir -p logs
     rsync -a cache/ releases/${TIMESTAMP}/
 
@@ -21,7 +21,7 @@ ssh -T ${STAGING_SSH_USER}@${STAGING_SSH_HOST} <<_EOF_
     ln -s ../../../../../logs/ releases/${TIMESTAMP}/public/typo3temp/var/logs
 
     # run
-    ln -sfn releases/${TIMESTAMP}/ releases/current
+    ln -sfn ${STAGING_BASE_DIR}/releases/${TIMESTAMP}/ releases/current
 
     # migrate
     php71 releases/${TIMESTAMP}/vendor/bin/typo3cms database:updateschema
