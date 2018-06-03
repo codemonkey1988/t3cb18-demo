@@ -10,6 +10,8 @@ additional_hostnames:
   - "typo3-en.ddev.local"
 provider: default
 
+# Use mysql for database instead of mariadb because mariadb may crash your
+# database when shutting down docker without stopping ddev.
 #dbimage: drud/mysql-local-57:v0.6.3
 
 # This config.yaml was created with ddev version v0.18.0 
