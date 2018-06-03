@@ -67,7 +67,6 @@ test:codestyle:
 build:composer:staging:
   <<: *build
   only:
-    - develop
     - master
   environment:
     name: staging
