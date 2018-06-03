@@ -30,5 +30,9 @@ ssh -T ${STAGING_SSH_USER}@${STAGING_SSH_HOST} <<_EOF_
     php71 releases/${TIMESTAMP}/vendor/bin/typo3cms cache:flush
 
     # cleanup
-
+    cd ${STAGING_BASE_DIR}/releases/
+    for f in \$(ls | grep -v current | sort -r | tail -n +4); do
+        echo "Deleting \$f"
+        rm -rf \$f
+    done;
 _EOF_
