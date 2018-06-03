@@ -4,15 +4,15 @@ set -e
 
 rsync -az --delete --delete-excluded --exclude-from=build/environments/staging/.rsyncignore ./ ${STAGING_SSH_USER}@${STAGING_SSH_HOST}:${STAGING_BASE_DIR}/cache/
 
+TIMESTAMP=$(date +%s)
+
 ssh -T ${STAGING_SSH_USER}@${STAGING_SSH_HOST} <<_EOF_
     # pre-prepare
     set -xe
     cd ${STAGING_BASE_DIR}
 
-    TIMESTAMP=$(date +%s)
-
     # prepare
-    mkdir -p releases
+    mkdir -p releases/{TIMESTAMP}/
     mkdir -p logs
     rsync -a cache/ releases/${TIMESTAMP}/
 
