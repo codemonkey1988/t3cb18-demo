@@ -1,5 +1,7 @@
 # TYPO3 CMS Base Distribution
 
+**This project is a demo project from TYPO3 Camp Berlin 2018 and is not maintained**
+
 Get going quickly with TYPO3 CMS.
 
 ## Prerequisites
